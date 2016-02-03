@@ -1,9 +1,12 @@
 package jf.andro.gcmreceiver;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -11,6 +14,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 public class MainActivity extends AppCompatActivity {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private MyBroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
         }
+
+        // Registers a receiver that receive notification from the service MonGcmListenerService
+        receiver = new MyBroadcastReceiver(new Handler(), (TextView)findViewById(R.id.textView));
+        registerReceiver(receiver, new IntentFilter("jf.andro.forward"));
     }
 
     private boolean checkPlayServices() {

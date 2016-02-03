@@ -1,5 +1,6 @@
 package jf.andro.gcmreceiver;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,6 +14,10 @@ public class MonGcmListenerService extends GcmListenerService {
     public void onMessageReceived(String from, Bundle data) {
 
         Log.i("JFL", "Message received from " + from);
+        Log.i("JFL", "Message: " + data.getString("the_message"));
 
+        Intent forward = new Intent("jf.andro.forward");
+        forward.putExtra("the_message", data.getString("the_message"));
+        sendBroadcast(forward);
     }
 }
